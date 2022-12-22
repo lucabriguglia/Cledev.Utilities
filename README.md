@@ -1,7 +1,7 @@
 # Cledev Tools (Beta)
 A collection of tools for .NET projects.
 
-[![Main](https://github.com/lucabriguglia/Cledev/actions/workflows/main.yml/badge.svg)](https://github.com/lucabriguglia/Cledev/actions/workflows/main.yml)
+[![Main](https://github.com/lucabriguglia/Cledev.Tools/actions/workflows/main.yml/badge.svg)](https://github.com/lucabriguglia/Cledev.Tools/actions/workflows/main.yml)
 
 ## Packages
 
