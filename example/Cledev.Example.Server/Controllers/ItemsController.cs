@@ -32,7 +32,7 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult> Get([FromRoute] Guid id) =>
         await _controllerService.ProcessQuery(new GetItem(id));
 
-    [ProducesResponseType(typeof(GetItemResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CreateItem), StatusCodes.Status200OK)]
     [HttpGet("create-item")]
     public async Task<ActionResult> GetCreateItem() =>
         await _controllerService.ProcessQuery(new GetCreateItem());
@@ -44,7 +44,7 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult> Post([FromBody] CreateItem command) =>
         await _controllerService.ProcessCommand(command);
 
-    [ProducesResponseType(typeof(GetItemResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(UpdateItem), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpGet("update-item/{id:guid}")]
     public async Task<ActionResult> GetUpdateItem([FromRoute] Guid id) =>
@@ -64,7 +64,7 @@ public class ItemsController : ControllerBase
     public async Task<ActionResult> Delete([FromRoute] Guid id) =>
         await _controllerService.ProcessCommand(new DeleteItem(id));
 
-    [ProducesResponseType(typeof(GetItemResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     [HttpGet("is-name-unique")]
     public async Task<ActionResult> IsNameUnique([FromQuery] string name, [FromQuery] Guid? id)
