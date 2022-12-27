@@ -19,7 +19,7 @@ public class ControllerService : IControllerService
     private readonly IServiceProvider _serviceProvider;
     private readonly IDispatcher _dispatcher;
 
-    protected ControllerService(IServiceProvider serviceProvider, IDispatcher dispatcher)
+    public ControllerService(IServiceProvider serviceProvider, IDispatcher dispatcher)
     {
         _serviceProvider = serviceProvider;
         _dispatcher = dispatcher;
