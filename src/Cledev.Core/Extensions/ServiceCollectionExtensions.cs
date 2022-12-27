@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using AutoMapper;
 using Cledev.Core.Events;
+using Cledev.Core.Results;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cledev.Core.Extensions;
@@ -19,7 +20,7 @@ public static class ServiceCollectionExtensions
 
         services.Scan(s => s
             .FromAssembliesOf(typeList)
-            .AddClasses()
+            .AddClasses(classes => classes.NotInNamespaceOf(typeof(Result)))
             .AsImplementedInterfaces());
 
         services.AddAutoMapper(typeList);
