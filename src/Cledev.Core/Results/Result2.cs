@@ -1,3 +1,7 @@
+using OneOf;
+
+namespace Cledev.Core.Results;
+
 public class Result2 : OneOfBase<Success, Failure>
 {
     protected Result2(OneOf<Success, Failure> input) : base(input) { }
