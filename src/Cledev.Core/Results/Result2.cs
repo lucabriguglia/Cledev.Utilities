@@ -16,6 +16,7 @@ public class Result2 : OneOfBase<Success, Failure>
     public Failure Failure => AsT1;
 
     public static Result2 Ok => new(new Success());
+    public static Result2 Fail(string failureCode = FailureCodes.Error, string? title = null, string? description = null) => new(new Failure(failureCode, title, description));
 
     public bool TryPickSuccess(out Success success, out Failure failure) => TryPickT0(out success, out failure);
     public bool TryPickFailure(out Failure failure, out Success success) => TryPickT1(out failure, out success);
@@ -33,6 +34,9 @@ public class Result2<TResult> : OneOfBase<TResult, Failure>
 
     public new TResult Value => AsT0;
     public Failure Failure => AsT1;
+
+    public static Result2<TResult> Ok(TResult value) => new(value);
+    public static Result2<TResult> Fail(string failureCode = FailureCodes.Error, string? title = null, string? description = null) => new(new Failure(failureCode, title, description));
 
     public bool TryPickSuccess(out TResult result, out Failure failure) => TryPickT0(out result, out failure);
     public bool TryPickFailure(out Failure failure, out TResult result) => TryPickT1(out failure, out result);
