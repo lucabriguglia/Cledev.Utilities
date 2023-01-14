@@ -18,7 +18,7 @@ public class UpdateItemHandler : ICommandHandler<UpdateItem>
 
         if (item is null)
         {
-            return new Failure(FailureCodes.NotFound, "Item", $"Item with id {command.Id} not found");
+            return new Failure(ErrorCodes.NotFound, "Item", $"Item with id {command.Id} not found");
         }
 
         item.Update(command.Name, command.Description);

@@ -21,7 +21,7 @@ public class GetUpdateItemHandler : IQueryHandler<GetUpdateItem, UpdateItem>
 
         if (item is null)
         {
-            return new Failure(FailureCodes.NotFound, "Item", $"Item with id {query.Id} not found");
+            return new Failure(ErrorCodes.NotFound, "Item", $"Item with id {query.Id} not found");
         }
 
         return new UpdateItem
