@@ -16,7 +16,7 @@ public static class ResultExtensions
     public static ActionResult ToActionResult<TResult>(this Result<TResult> result)
     {
         return result.Match(
-            success => new OkObjectResult(success),
+            success => new OkObjectResult(success.Result),
             failure => failure.ToActionResult()
         );
     }
