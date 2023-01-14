@@ -24,7 +24,7 @@ public class GetItemHandler : IQueryHandler<GetItem, GetItemResponse>
 
         if (item is null)
         {
-            return new Failure(FailureCodes.NotFound, "Item", $"Item with id {query.Id} not found");
+            return new Failure(ErrorCodes.NotFound, "Item", $"Item with id {query.Id} not found");
         }
 
         return new GetItemResponse(item.Id, item.Name, item.Description);

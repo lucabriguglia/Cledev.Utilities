@@ -16,31 +16,31 @@ public class GetCreateItemHandler : IQueryHandler<GetCreateItem, CreateItem>
         await Task.CompletedTask;
 
         return Result2<CreateItem>.Ok(new CreateItem());
-        return Result2<CreateItem>.Fail(FailureCodes.NotFound, "Item", $"Item not found");
+        return Result2<CreateItem>.Fail(ErrorCodes.NotFound, "Item", $"Item not found");
 
         return new CreateItem();
-        return new Failure(FailureCodes.NotFound, "Item", $"Item not found");
+        return new Failure(ErrorCodes.NotFound, "Item", $"Item not found");
     }
     
     public async Task<Result3<CreateItem>> Handle3T(GetCreateItem query)
     {
         await Task.CompletedTask;
 
-        return Result3<CreateItem>.Ok(new Success<CreateItem>(new CreateItem()));
-        return Result3<CreateItem>.Fail(FailureCodes.NotFound, "Item", $"Item not found");
+        return Result3<CreateItem>.Ok(new CreateItem());
+        return Result3<CreateItem>.Fail(ErrorCodes.NotFound, "Item", $"Item not found");
         
         return new Success<CreateItem>(new CreateItem());
-        return new Failure(FailureCodes.NotFound, "Item", $"Item not found");
+        return new Failure(ErrorCodes.NotFound, "Item", $"Item not found");
     }
 
     public async Task<Result3> Handle3(GetCreateItem query)
     {
         await Task.CompletedTask;
 
-        return Result3.Ok;
-        return Result3.Fail(FailureCodes.NotFound, "Item", $"Item not found");
+        return Result3.Ok();
+        return Result3.Fail(ErrorCodes.NotFound, "Item", $"Item not found");
 
         return new Success();
-        return new Failure(FailureCodes.NotFound, "Item", $"Item not found");
+        return new Failure(ErrorCodes.NotFound, "Item", $"Item not found");
     }
 }

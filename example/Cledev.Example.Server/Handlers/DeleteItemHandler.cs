@@ -18,7 +18,7 @@ public class DeleteItemHandler : ICommandHandler<DeleteItem>
 
         if (item is null)
         {
-            return new Failure(FailureCodes.NotFound, "Item", $"Item with id {command.Id} not found");
+            return new Failure(ErrorCodes.NotFound, "Item", $"Item with id {command.Id} not found");
         }
 
         _dbContext.Items.Remove(item);

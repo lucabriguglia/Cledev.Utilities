@@ -18,8 +18,8 @@ public static class FailureExtensions
 
         return failureCode switch
         {
-            FailureCodes.NotFound => new NotFoundObjectResult(problemDetails),
-            FailureCodes.Unauthorized => new UnauthorizedObjectResult(problemDetails),
+            ErrorCodes.NotFound => new NotFoundObjectResult(problemDetails),
+            ErrorCodes.Unauthorized => new UnauthorizedObjectResult(problemDetails),
             _ => new UnprocessableEntityObjectResult(problemDetails)
         };
     }
@@ -28,9 +28,9 @@ public static class FailureExtensions
     {
         return failureCode switch
         {
-            FailureCodes.NotFound => 404,
-            FailureCodes.Unauthorized => 401,
-            FailureCodes.Error => 422,
+            ErrorCodes.NotFound => 404,
+            ErrorCodes.Unauthorized => 401,
+            ErrorCodes.Error => 422,
             _ => 400
         };
     }
