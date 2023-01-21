@@ -4,8 +4,7 @@ public record Failure(string ErrorCode = ErrorCodes.Error, string? Title = null,
 
 public static class ErrorCodes
 {
-    public const string
-        Error = "Error",
-        NotFound = "NotFound",
-        Unauthorized = "Unauthorized";
+    public const string Error = "Error";
+    public const string NotFound = "NotFound";
+    public const string Unauthorized = "Unauthorized";
 }
