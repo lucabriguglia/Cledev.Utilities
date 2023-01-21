@@ -12,18 +12,18 @@ public class CommandSender : ICommandSender
         _serviceProvider = serviceProvider;
     }
 
-    public async Task<Result> Send<TCommand>(TCommand command) where TCommand : ICommand
+    public async Task<Result> Send<TCommand>(TCommand? command) where TCommand : ICommand
     {
-        if (command == null)
+        if (command is null)
         {
-            throw new ArgumentNullException(nameof(command));
+            return Result.Fail(ErrorCodes.Error, title: "Null Argument", description: "Command is null");
         }
 
         var handler = _serviceProvider.GetService<ICommandHandler<TCommand>>();
 
-        if (handler == null)
+        if (handler is null)
         {
-            throw new Exception($"Handler not found for command of type {typeof(TCommand)}");
+            return Result.Fail(ErrorCodes.Error, title: "Null Handler", description: "Command handler is null");
         }
 
         return await handler.Handle(command);

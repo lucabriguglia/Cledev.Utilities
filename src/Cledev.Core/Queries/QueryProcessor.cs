@@ -16,9 +16,9 @@ public class QueryProcessor : IQueryProcessor
 
     public async Task<Result<TResult>> Process<TResult>(IQuery<TResult> query)
     {
-        if (query == null)
+        if (query is null)
         {
-            throw new ArgumentNullException(nameof(query));
+            return Result<TResult>.Fail(ErrorCodes.Error, title: "Null Argument", description: "Query is null");
         }
 
         var queryType = query.GetType();

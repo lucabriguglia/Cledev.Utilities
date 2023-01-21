@@ -9,5 +9,5 @@ public interface IDispatcher
 {
     Task<Result> Send<TCommand>(TCommand command) where TCommand : ICommand;
     Task<Result<TResult>> Get<TResult>(IQuery<TResult> query);
-    Task Publish<TEvent>(TEvent @event) where TEvent : IEvent;
+    Task<Result> Publish<TEvent>(TEvent @event) where TEvent : IEvent;
 }

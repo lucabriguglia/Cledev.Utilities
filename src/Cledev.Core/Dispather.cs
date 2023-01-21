@@ -45,7 +45,7 @@ public class Dispatcher : IDispatcher
                 tasks.Add(task);
             }
 
-            await Task.WhenAll(tasks);
+            await Task.WhenAll(tasks); // TODO: Handle publisher failed results
 
             return success;
         }
@@ -61,8 +61,8 @@ public class Dispatcher : IDispatcher
         return await _queryProcessor.Process(query);
     }
 
-    public async Task Publish<TEvent>(TEvent @event) where TEvent : IEvent
+    public async Task<Result> Publish<TEvent>(TEvent @event) where TEvent : IEvent
     {
-        await _eventPublisher.Publish(@event);
+        return await _eventPublisher.Publish(@event);
     }
 }

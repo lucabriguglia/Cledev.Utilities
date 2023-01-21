@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Cledev.Core.Results;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Cledev.Core.Events;
 
@@ -11,11 +12,11 @@ public class EventPublisher : IEventPublisher
         _serviceProvider = serviceProvider;
     }
 
-    public async Task Publish<TEvent>(TEvent @event) where TEvent : IEvent
+    public async Task<Result> Publish<TEvent>(TEvent @event) where TEvent : IEvent
     {
-        if (@event == null)
+        if (@event is null)
         {
-            throw new ArgumentNullException(nameof(@event));
+            return Result.Fail(ErrorCodes.Error, title: "Null Argument", description: "Event is null");
         }
 
         var handlers = _serviceProvider.GetServices<IEventHandler<TEvent>>();
@@ -23,5 +24,7 @@ public class EventPublisher : IEventPublisher
         var tasks = handlers.Select(handler => handler.Handle(@event)).ToList();
 
         await Task.WhenAll(tasks);
+
+        return Result.Ok();
     }
 }

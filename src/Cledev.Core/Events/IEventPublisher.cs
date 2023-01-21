@@ -1,6 +1,8 @@
-﻿namespace Cledev.Core.Events;
+﻿using Cledev.Core.Results;
+
+namespace Cledev.Core.Events;
 
 public interface IEventPublisher
 {
-    Task Publish<TEvent>(TEvent @event) where TEvent : IEvent;
+    Task<Result> Publish<TEvent>(TEvent @event) where TEvent : IEvent;
 }
