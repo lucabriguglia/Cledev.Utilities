@@ -9,7 +9,7 @@ public static class FluentValidationExtensions
     {
         return new BadRequestObjectResult(new ProblemDetails
         {
-            Title = "Command validation failed",
+            Title = "Validation failed",
             Detail = validationResult.Errors.ToErrorMessage(),
             Status = 400
         });
