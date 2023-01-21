@@ -6,26 +6,29 @@ namespace Cledev.Server.Services;
 public interface IUserService
 {
     string? GetCurrentIdentityUserId();
+    string? GetCurrentIdentityUserEmail();
 }
 
 public class UserService : IUserService
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UserService(IHttpContextAccessor httpContextAccessor)
-    {
+    public UserService(IHttpContextAccessor httpContextAccessor) => 
         _httpContextAccessor = httpContextAccessor;
-    }
 
-    public string? GetCurrentIdentityUserId()
+    public string? GetCurrentIdentityUserId() =>
+        IsUserAuthenticated() 
+            ? _httpContextAccessor.HttpContext!.User.GetUserId() 
+            : null;
+
+    public string? GetCurrentIdentityUserEmail() => 
+        IsUserAuthenticated() 
+            ? _httpContextAccessor.HttpContext!.User.GetEmail() 
+            : null;
+
+    private bool IsUserAuthenticated()
     {
         var claimsPrincipal = _httpContextAccessor.HttpContext?.User;
-        if (claimsPrincipal?.Identity is null || !claimsPrincipal.Identity.IsAuthenticated)
-        {
-            return null;
-        }
-
-        var identityUserId = claimsPrincipal.GetUserId();
-        return string.IsNullOrEmpty(identityUserId) ? null : identityUserId;
+        return claimsPrincipal?.Identity?.IsAuthenticated is true;
     }
 }
