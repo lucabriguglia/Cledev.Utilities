@@ -4,15 +4,15 @@ namespace Cledev.Core.Queries;
 
 internal class QueryHandlerWrapper<TQuery, TResult> : QueryHandlerWrapperBase<TResult> where TQuery : IQuery<TResult>
 {
-    public override Task<Result<TResult>> Handle(IQuery<TResult> query, IServiceProvider serviceProvider)
+    public override async Task<Result<TResult>> Handle(IQuery<TResult> query, IServiceProvider serviceProvider)
     {
         var handler = GetHandler<IQueryHandler<TQuery, TResult>>(serviceProvider);
 
         if (handler == null)
         {
-            throw new Exception($"Handler not found for query of type {typeof(TQuery)}");
+            return Result<TResult>.Fail(ErrorCodes.Error, title: "Handler not found", description: $"Handler not found for query of type {typeof(TQuery)}");
         }
 
-        return handler.Handle((TQuery)query);
+        return await handler.Handle((TQuery)query);
     }
 }
