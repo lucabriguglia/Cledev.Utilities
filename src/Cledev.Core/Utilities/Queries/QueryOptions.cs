@@ -3,8 +3,8 @@
 public class QueryOptions
 {
     private const int DefaultPageSize = 10;
-    public string Search { get; set; }
-    public string OrderByField { get; set; }
+    public string? Search { get; set; }
+    public string? OrderByField { get; set; }
 
     public OrderByDirectionType? OrderByDirection { get; set; }
     public int CurrentPage { get; set; }
@@ -14,7 +14,7 @@ public class QueryOptions
     public bool SearchIsDefined() => !string.IsNullOrWhiteSpace(Search);
     public bool OrderByFieldIsDefined() => !string.IsNullOrWhiteSpace(OrderByField) && OrderByDirection != null;
 
-    public QueryOptions(int? currentPage = 1, string search = null, string orderByField = null, string orderByDirection = null, int? pageSize = null)
+    public QueryOptions(int? currentPage = 1, string? search = null, string? orderByField = null, string? orderByDirection = null, int? pageSize = null)
     {
         CurrentPage = SetCurrentPage(currentPage);
         Search = search;

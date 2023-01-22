@@ -18,6 +18,11 @@ public static class StringExtensions
 
     public static string InsertSpaceBeforeUpperCase(this string text)
     {
+        if (string.IsNullOrEmpty(text))
+        {
+            throw new ArgumentNullException(nameof(text));
+        }
+        
         var stringBuilder = new StringBuilder();
 
         var previousChar = char.MinValue;
