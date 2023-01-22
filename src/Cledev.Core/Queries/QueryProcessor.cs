@@ -18,7 +18,7 @@ public class QueryProcessor : IQueryProcessor
     {
         if (query is null)
         {
-            return Result<TResult>.Fail(ErrorCodes.Error, title: "Null Argument", description: "Query is null");
+            return Result<TResult>.Fail(ErrorCodes.Error, title: "Null Argument", description: $"Query of type {typeof(IQuery<TResult>)} is null");
         }
 
         var queryType = query.GetType();

@@ -16,14 +16,14 @@ public class CommandSender : ICommandSender
     {
         if (command is null)
         {
-            return Result.Fail(ErrorCodes.Error, title: "Null Argument", description: "Command is null");
+            return Result.Fail(ErrorCodes.Error, title: "Null Argument", description: $"Command of type {typeof(TCommand)} is null");
         }
 
         var handler = _serviceProvider.GetService<ICommandHandler<TCommand>>();
 
         if (handler is null)
         {
-            return Result.Fail(ErrorCodes.Error, title: "Null Handler", description: "Command handler is null");
+            return Result.Fail(ErrorCodes.Error, title: "Handler not found", description: $"Handler not found for command of type {typeof(TCommand)}");
         }
 
         return await handler.Handle(command);
