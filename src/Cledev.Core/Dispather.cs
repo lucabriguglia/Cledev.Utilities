@@ -30,13 +30,12 @@ public class Dispatcher : IDispatcher
         async Task<Result> HandleSuccess(Success success)
         {
             var events = success.Events.ToList();
-
             if (events.Any() is false)
             {
                 return success;
             }
 
-            var tasks = new List<Task>();
+            var tasks = new List<Task<Result>>();
 
             foreach (var @event in events)
             {
@@ -45,7 +44,11 @@ public class Dispatcher : IDispatcher
                 tasks.Add(task);
             }
 
-            await Task.WhenAll(tasks); // TODO: Handle publisher failed results
+            var results = await Task.WhenAll(tasks);
+            if (results.Any(result => result.IsFailure))
+            {
+                // TODO: Handle event publisher failed results
+            }
 
             return success;
         }
