@@ -1,4 +1,4 @@
-﻿using Cledev.Core.Commands;
+﻿using Cledev.Core.Requests;
 using Cledev.Core.Results;
 using Cledev.Example.Server.Data;
 using Cledev.Example.Shared;
@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cledev.Example.Server.Handlers;
 
-public class DeleteItemHandler : ICommandHandler<DeleteItem>
+public class DeleteItemHandler : IRequestHandler<DeleteItem>
 {
     private readonly ApplicationDbContext _dbContext;
 

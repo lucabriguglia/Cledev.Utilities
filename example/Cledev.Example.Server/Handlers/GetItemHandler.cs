@@ -1,4 +1,4 @@
-﻿using Cledev.Core.Queries;
+﻿using Cledev.Core.Requests;
 using Cledev.Core.Results;
 using Cledev.Example.Server.Data;
 using Cledev.Example.Shared;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Cledev.Example.Server.Handlers;
 
-public class GetItemHandler : IQueryHandler<GetItem, GetItemResponse>
+public class GetItemHandler : IRequestHandler<GetItem, GetItemResponse>
 {
     private readonly ApplicationDbContext _dbContext;
     private readonly ICacheManager _cacheManager;

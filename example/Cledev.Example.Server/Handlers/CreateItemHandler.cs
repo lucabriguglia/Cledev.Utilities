@@ -1,4 +1,4 @@
-﻿using Cledev.Core.Commands;
+﻿using Cledev.Core.Requests;
 using Cledev.Core.Results;
 using Cledev.Example.Server.Data;
 using Cledev.Example.Server.Data.Entities;
@@ -6,7 +6,7 @@ using Cledev.Example.Shared;
 
 namespace Cledev.Example.Server.Handlers;
 
-public class CreateItemHandler : ICommandHandler<CreateItem>
+public class CreateItemHandler : IRequestHandler<CreateItem>
 {
     private readonly ApplicationDbContext _dbContext;
 

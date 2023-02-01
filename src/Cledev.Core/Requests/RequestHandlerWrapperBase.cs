@@ -1,14 +1,14 @@
 ﻿using Cledev.Core.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Cledev.Core.Queries;
+namespace Cledev.Core.Requests;
 
-internal abstract class QueryHandlerWrapperBase<TResult>
+internal abstract class RequestHandlerWrapperBase<TResult>
 {
     protected static THandler? GetHandler<THandler>(IServiceProvider serviceProvider)
     {
         return serviceProvider.GetService<THandler>();
     }
 
-    public abstract Task<Result<TResult>> Handle(IQuery<TResult> query, IServiceProvider serviceProvider);
+    public abstract Task<Result<TResult>> Handle(IRequest<TResult> request, IServiceProvider serviceProvider);
 }

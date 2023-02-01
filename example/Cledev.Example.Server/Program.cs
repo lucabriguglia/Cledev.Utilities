@@ -3,7 +3,6 @@ using Cledev.Example.Server.Data;
 using Cledev.Example.Server.Data.Entities;
 using Cledev.Server.Extensions;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

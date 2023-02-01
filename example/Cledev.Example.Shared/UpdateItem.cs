@@ -1,13 +1,12 @@
-﻿using Cledev.Core.Commands;
-using Cledev.Core.Events;
-using Cledev.Core.Queries;
+﻿using Cledev.Core.Events;
+using Cledev.Core.Requests;
 using FluentValidation;
 
 namespace Cledev.Example.Shared;
 
-public record GetUpdateItem(Guid Id) : QueryBase<UpdateItem>;
+public record GetUpdateItem(Guid Id) : RequestBase<UpdateItem>;
 
-public class UpdateItem : CommandBase
+public class UpdateItem : RequestBase
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = null!;

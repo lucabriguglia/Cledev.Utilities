@@ -1,6 +1,5 @@
 using Cledev.Core;
-using Cledev.Core.Commands;
-using Cledev.Core.Queries;
+using Cledev.Core.Requests;
 using Cledev.Server.Extensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
@@ -10,8 +9,8 @@ namespace Cledev.Server.Services;
 
 public interface IControllerService
 {
-    Task<ActionResult> ProcessCommand<TCommand>(TCommand command) where TCommand : ICommand;
-    Task<ActionResult> ProcessQuery<TResult>(IQuery<TResult> query);
+    Task<ActionResult> ProcessCommand<TCommand>(TCommand command) where TCommand : IRequest;
+    Task<ActionResult> ProcessQuery<TResult>(IRequest<TResult> request);
 }
 
 public class ControllerService : IControllerService
@@ -25,7 +24,7 @@ public class ControllerService : IControllerService
         _dispatcher = dispatcher;
     }
 
-    public async Task<ActionResult> ProcessCommand<TCommand>(TCommand command) where TCommand : ICommand
+    public async Task<ActionResult> ProcessCommand<TCommand>(TCommand command) where TCommand : IRequest
     {
         var validator = _serviceProvider.GetService<IValidator<TCommand>?>();
         if (validator is not null)
@@ -42,9 +41,9 @@ public class ControllerService : IControllerService
         return commandResult.ToActionResult();
     }
 
-    public async Task<ActionResult> ProcessQuery<TResult>(IQuery<TResult> query)
+    public async Task<ActionResult> ProcessQuery<TResult>(IRequest<TResult> request)
     {
-        var queryResult = await _dispatcher.Get(query);
+        var queryResult = await _dispatcher.Get(request);
 
         return queryResult.ToActionResult();
     }

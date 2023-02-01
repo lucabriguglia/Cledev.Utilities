@@ -1,29 +1,26 @@
-﻿using Cledev.Core.Commands;
-using Cledev.Core.Events;
+﻿using Cledev.Core.Events;
 using Cledev.Core.Mapping;
-using Cledev.Core.Queries;
+using Cledev.Core.Requests;
 using Cledev.Core.Results;
 
 namespace Cledev.Core;
 
 public class Dispatcher : IDispatcher
 {
-    private readonly ICommandSender _commandSender;
-    private readonly IQueryProcessor _queryProcessor;
+    private readonly IRequestSender _requestSender;
     private readonly IEventPublisher _eventPublisher;
     private readonly IObjectFactory _objectFactory;
 
-    public Dispatcher(ICommandSender commandSender, IQueryProcessor queryProcessor, IEventPublisher eventPublisher, IObjectFactory objectFactory)
+    public Dispatcher(IRequestSender requestSender, IEventPublisher eventPublisher, IObjectFactory objectFactory)
     {
-        _commandSender = commandSender;
-        _queryProcessor = queryProcessor;
+        _requestSender = requestSender;
         _eventPublisher = eventPublisher;
         _objectFactory = objectFactory;
     }
 
-    public async Task<Result> Send<TCommand>(TCommand command) where TCommand : ICommand
+    public async Task<Result> Send<TCommand>(TCommand command) where TCommand : IRequest
     {
-        var commandResult = await _commandSender.Send(command);
+        var commandResult = await _requestSender.Send(command);
 
         return await commandResult.Match(HandleSuccess, HandleFailure);
 
@@ -59,9 +56,9 @@ public class Dispatcher : IDispatcher
         }
     }
 
-    public async Task<Result<TResult>> Get<TResult>(IQuery<TResult> query)
+    public async Task<Result<TResult>> Get<TResult>(IRequest<TResult> request)
     {
-        return await _queryProcessor.Process(query);
+        return await _requestSender.Process(request);
     }
 
     public async Task<Result> Publish<TEvent>(TEvent @event) where TEvent : IEvent

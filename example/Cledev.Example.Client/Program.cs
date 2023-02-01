@@ -2,7 +2,6 @@ using Cledev.Client.Extensions;
 using Cledev.Core.Extensions;
 using Cledev.Example.Client;
 using Microsoft.AspNetCore.Components.Web;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
