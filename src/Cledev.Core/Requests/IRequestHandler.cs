@@ -2,12 +2,12 @@
 
 namespace Cledev.Core.Requests;
 
-public interface IRequestHandler<in TCommand> where TCommand : IRequest
+public interface IRequestHandler<in TRequest> where TRequest : IRequest
 {
-    Task<Result> Handle(TCommand command);
+    Task<Result> Handle(TRequest request);
 }
 
-public interface IRequestHandler<in TQuery, TResult> where TQuery : IRequest<TResult>
+public interface IRequestHandler<in TRequest, TResult> where TRequest : IRequest<TResult>
 {
-    Task<Result<TResult>> Handle(TQuery query);
+    Task<Result<TResult>> Handle(TRequest request);
 }

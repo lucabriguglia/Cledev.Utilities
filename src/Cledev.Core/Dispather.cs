@@ -18,11 +18,11 @@ public class Dispatcher : IDispatcher
         _objectFactory = objectFactory;
     }
 
-    public async Task<Result> Send<TCommand>(TCommand command) where TCommand : IRequest
+    public async Task<Result> Send<TRequest>(TRequest request) where TRequest : IRequest
     {
-        var commandResult = await _requestSender.Send(command);
+        var requestResult = await _requestSender.Send(request);
 
-        return await commandResult.Match(HandleSuccess, HandleFailure);
+        return await requestResult.Match(HandleSuccess, HandleFailure);
 
         async Task<Result> HandleSuccess(Success success)
         {
@@ -56,9 +56,9 @@ public class Dispatcher : IDispatcher
         }
     }
 
-    public async Task<Result<TResult>> Get<TResult>(IRequest<TResult> request)
+    public async Task<Result<TResult>> Send<TResult>(IRequest<TResult> request)
     {
-        return await _requestSender.Process(request);
+        return await _requestSender.Send(request);
     }
 
     public async Task<Result> Publish<TEvent>(TEvent @event) where TEvent : IEvent

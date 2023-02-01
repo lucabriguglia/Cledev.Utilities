@@ -1,6 +1,6 @@
 ﻿namespace Cledev.Core.Utilities.Queries;
 
-public class QueryOptions
+public class RequestOptions
 {
     private const int DefaultPageSize = 10;
     public string? Search { get; set; }
@@ -14,7 +14,7 @@ public class QueryOptions
     public bool SearchIsDefined() => !string.IsNullOrWhiteSpace(Search);
     public bool OrderByFieldIsDefined() => !string.IsNullOrWhiteSpace(OrderByField) && OrderByDirection != null;
 
-    public QueryOptions(int? currentPage = 1, string? search = null, string? orderByField = null, string? orderByDirection = null, int? pageSize = null)
+    public RequestOptions(int? currentPage = 1, string? search = null, string? orderByField = null, string? orderByDirection = null, int? pageSize = null)
     {
         CurrentPage = SetCurrentPage(currentPage);
         Search = search;

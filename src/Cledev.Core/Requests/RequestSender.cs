@@ -14,34 +14,34 @@ public class RequestSender : IRequestSender
         _serviceProvider = serviceProvider;
     }
 
-    public async Task<Result> Send<TCommand>(TCommand? command) where TCommand : IRequest
-    {
-        if (command is null)
-        {
-            return Result.Fail(ErrorCodes.Error, title: "Null Argument", description: $"Command of type {typeof(TCommand)} is null");
-        }
-
-        var handler = _serviceProvider.GetService<IRequestHandler<TCommand>>();
-
-        if (handler is null)
-        {
-            return Result.Fail(ErrorCodes.Error, title: "Handler not found", description: $"Handler not found for command of type {typeof(TCommand)}");
-        }
-
-        return await handler.Handle(command);
-    }
-
-    public async Task<Result<TResult>> Process<TResult>(IRequest<TResult> request)
+    public async Task<Result> Send<TRequest>(TRequest? request) where TRequest : IRequest
     {
         if (request is null)
         {
-            return Result<TResult>.Fail(ErrorCodes.Error, title: "Null Argument", description: $"Query of type {typeof(IRequest<TResult>)} is null");
+            return Result.Fail(ErrorCodes.Error, title: "Null Argument", description: $"Request of type {typeof(TRequest)} is null");
         }
 
-        var queryType = request.GetType();
+        var handler = _serviceProvider.GetService<IRequestHandler<TRequest>>();
 
-        var handler = (RequestHandlerWrapperBase<TResult>)RequestHandlerWrappers.GetOrAdd(queryType,
-            t => Activator.CreateInstance(typeof(RequestHandlerWrapper<,>).MakeGenericType(queryType, typeof(TResult))))!;
+        if (handler is null)
+        {
+            return Result.Fail(ErrorCodes.Error, title: "Handler not found", description: $"Handler not found for request of type {typeof(TRequest)}");
+        }
+
+        return await handler.Handle(request);
+    }
+
+    public async Task<Result<TResult>> Send<TResult>(IRequest<TResult>? request)
+    {
+        if (request is null)
+        {
+            return Result<TResult>.Fail(ErrorCodes.Error, title: "Null Argument", description: $"Request of type {typeof(IRequest<TResult>)} is null");
+        }
+
+        var requestType = request.GetType();
+
+        var handler = (RequestHandlerWrapperBase<TResult>)RequestHandlerWrappers.GetOrAdd(requestType,
+            t => Activator.CreateInstance(typeof(RequestHandlerWrapper<,>).MakeGenericType(requestType, typeof(TResult))))!;
 
         var result = await handler.Handle(request, _serviceProvider);
 

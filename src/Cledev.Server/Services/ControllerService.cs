@@ -9,7 +9,7 @@ namespace Cledev.Server.Services;
 
 public interface IControllerService
 {
-    Task<ActionResult> ProcessCommand<TCommand>(TCommand command) where TCommand : IRequest;
+    Task<ActionResult> ProcessCommand<TRequest>(TRequest command) where TRequest : IRequest;
     Task<ActionResult> ProcessQuery<TResult>(IRequest<TResult> request);
 }
 
@@ -24,9 +24,9 @@ public class ControllerService : IControllerService
         _dispatcher = dispatcher;
     }
 
-    public async Task<ActionResult> ProcessCommand<TCommand>(TCommand command) where TCommand : IRequest
+    public async Task<ActionResult> ProcessCommand<TRequest>(TRequest command) where TRequest : IRequest
     {
-        var validator = _serviceProvider.GetService<IValidator<TCommand>?>();
+        var validator = _serviceProvider.GetService<IValidator<TRequest>?>();
         if (validator is not null)
         {
             var validationResult = await validator.ValidateAsync(command);
@@ -43,7 +43,7 @@ public class ControllerService : IControllerService
 
     public async Task<ActionResult> ProcessQuery<TResult>(IRequest<TResult> request)
     {
-        var queryResult = await _dispatcher.Get(request);
+        var queryResult = await _dispatcher.Send(request);
 
         return queryResult.ToActionResult();
     }

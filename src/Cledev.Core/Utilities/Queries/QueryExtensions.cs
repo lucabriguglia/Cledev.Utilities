@@ -6,9 +6,9 @@ namespace Cledev.Core.Utilities.Queries;
 /// <summary>
 /// https://stackoverflow.com/questions/34906437/how-to-construct-order-by-expression-dynamically-in-entity-framework
 /// </summary>
-public static class QueryExtensions
+public static class RequestExtensions
 {
-    public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, QueryOptions options)
+    public static IRequestable<T> OrderBy<T>(this IRequestable<T> source, RequestOptions options)
     {
         var propertyName = options.OrderByField;
         var direction = options.OrderByDirection;
@@ -24,14 +24,14 @@ public static class QueryExtensions
     }
 
     private static readonly MethodInfo OrderByMethod =
-        typeof(Queryable).GetMethods().Single(method =>
+        typeof(Requestable).GetMethods().Single(method =>
             method.Name == "OrderBy" && method.GetParameters().Length == 2);
 
     private static readonly MethodInfo OrderByDescendingMethod =
-        typeof(Queryable).GetMethods().Single(method =>
+        typeof(Requestable).GetMethods().Single(method =>
             method.Name == "OrderByDescending" && method.GetParameters().Length == 2);
 
-    private static bool PropertyExists<T>(this IQueryable<T> source, string propertyName)
+    private static bool PropertyExists<T>(this IRequestable<T> source, string propertyName)
     {
         return typeof(T).GetProperty(propertyName,
             BindingFlags.IgnoreCase |
@@ -39,7 +39,7 @@ public static class QueryExtensions
             BindingFlags.Instance) is not null;
     }
 
-    private static IQueryable<T> OrderByProperty<T>(this IQueryable<T> source, string propertyName)
+    private static IRequestable<T> OrderByProperty<T>(this IRequestable<T> source, string propertyName)
     {
         if (typeof(T).GetProperty(propertyName,
                 BindingFlags.IgnoreCase |
@@ -54,10 +54,10 @@ public static class QueryExtensions
         LambdaExpression lambda = Expression.Lambda(orderByProperty, parameterExpression);
         MethodInfo genericMethod = OrderByMethod.MakeGenericMethod(typeof(T), orderByProperty.Type);
         object ret = genericMethod.Invoke(null, new object[] { source, lambda });
-        return (IQueryable<T>)ret;
+        return (IRequestable<T>)ret;
     }
 
-    private static IQueryable<T> OrderByPropertyDescending<T>(this IQueryable<T> source, string propertyName)
+    private static IRequestable<T> OrderByPropertyDescending<T>(this IRequestable<T> source, string propertyName)
     {
         if (typeof(T).GetProperty(propertyName,
                 BindingFlags.IgnoreCase |
@@ -72,6 +72,6 @@ public static class QueryExtensions
         LambdaExpression lambda = Expression.Lambda(orderByProperty, parameterExpression);
         MethodInfo genericMethod = OrderByDescendingMethod.MakeGenericMethod(typeof(T), orderByProperty.Type);
         object ret = genericMethod.Invoke(null, new object[] { source, lambda });
-        return (IQueryable<T>)ret;
+        return (IRequestable<T>)ret;
     }
 }
