@@ -29,9 +29,9 @@ public enum EmbeddingsModel
     TextEmbeddingAdaV2
 }
 
-public static class ModelsExtensions
+internal static class OpenAIModelsExtensions
 {
-    public static string ToStringModel(this CompletionsModel completionsModel)
+    internal static string ToStringModel(this CompletionsModel completionsModel)
     {
         return completionsModel switch
         {
@@ -53,7 +53,7 @@ public static class ModelsExtensions
         };
     }
 
-    public static string ToStringModel(this EditsModel editsModel)
+    internal static string ToStringModel(this EditsModel editsModel)
     {
         return editsModel switch
         {
@@ -63,7 +63,7 @@ public static class ModelsExtensions
         };
     }
 
-    public static string ToStringModel(this EmbeddingsModel embeddingsModel)
+    internal static string ToStringModel(this EmbeddingsModel embeddingsModel)
     {
         return embeddingsModel switch
         {

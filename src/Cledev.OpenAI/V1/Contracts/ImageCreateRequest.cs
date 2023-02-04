@@ -8,13 +8,13 @@ public class ImageCreateRequest
     public required string Prompt { get; set; }
 
     [JsonPropertyName("n")]
-    public int? N { get; set; }
+    public required int? NumberOfImagesToGenerate { get; set; }
 
     [JsonPropertyName("size")]
-    public string? Size { get; set; }
+    public required string? ImageSize { get; set; }
 
     [JsonPropertyName("response_format")]
-    public string? ResponseFormat { get; set; }
+    public required string? ResponseFormat { get; set; }
 
     [JsonPropertyName("user")]
     public string? User { get; set; }

@@ -11,8 +11,8 @@ public interface IOpenAIService
     Task<RetrieveModelsResponse?> RetrieveModels();
     Task<RetrieveModelsResponse.RetrieveModelsResponseData?> RetrieveModel(string id);
     Task<CompletionCreateResponse?> CreateCompletion(string prompt, CompletionsModel? model = null, int? maxTokens = null);
-    Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null, int? maxTokens = null);
-    Task<ImageCreateResponse?> CreateImage(string prompt);
+    Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null);
+    Task<ImageCreateResponse?> CreateImage(string prompt, int? numberOfImagesToGenerate = null, ImageSize? size = null, ImageResponseFormat? responseFormat = null);
 }
 
 public class OpenAIService : IOpenAIService
@@ -54,7 +54,7 @@ public class OpenAIService : IOpenAIService
         return await response.Content.ReadFromJsonAsync<CompletionCreateResponse?>();
     }
 
-    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null, int? maxTokens = null)
+    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null)
     {
         var request = new EditCreateRequest
         {
@@ -66,11 +66,14 @@ public class OpenAIService : IOpenAIService
         return await response.Content.ReadFromJsonAsync<EditCreateResponse?>();
     }
 
-    public async Task<ImageCreateResponse?> CreateImage(string prompt)
+    public async Task<ImageCreateResponse?> CreateImage(string prompt, int? numberOfImagesToGenerate = null, ImageSize? size = null, ImageResponseFormat? responseFormat = null)
     {
         var request = new ImageCreateRequest
         {
-            Prompt = prompt
+            Prompt = prompt,
+            NumberOfImagesToGenerate = numberOfImagesToGenerate ?? 1,
+            ImageSize = (size ?? ImageSize.Size1024x1024).ToStringSize(),
+            ResponseFormat = (responseFormat ?? ImageResponseFormat.Url).ToStringFormat()
         };
         var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/images/generations", request, new JsonSerializerOptions
         {

@@ -8,7 +8,7 @@ public class EditCreateRequest
     public required string Model { get; set; }
 
     [JsonPropertyName("input")]
-    public string? Input { get; set; }
+    public required string? Input { get; set; }
 
     [JsonPropertyName("instruction")]
     public required string Instruction { get; set; }
