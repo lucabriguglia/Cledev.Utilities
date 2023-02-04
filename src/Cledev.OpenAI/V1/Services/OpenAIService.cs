@@ -9,12 +9,14 @@ public interface IOpenAIService
     Task<RetrieveModelsResponse?> RetrieveModels();
     Task<RetrieveModelsResponse.RetrieveModelsResponseData?> RetrieveModel(string id);
     Task<CompletionCreateResponse?> CreateCompletion(string prompt, string? model = null, int? maxTokens = null);
+    Task<EditCreateResponse?> CreateEdit(string input, string instruction, string? model = null, int? maxTokens = null);
 }
 
 public class OpenAIService : IOpenAIService
 {
     private const string ApiVersion = "v1";
-    private const string DefaultOpenAIModel = "ada";
+    private const string DefaultCompletionModel = "ada";
+    private const string DefaultEditModel = "text-davinci-edit-001";
 
     private readonly HttpClient _httpClient;
 
@@ -43,12 +45,25 @@ public class OpenAIService : IOpenAIService
     {
         var request = new CompletionCreateRequest
         {
-            Model = model ?? DefaultOpenAIModel,
+            Model = model ?? DefaultCompletionModel,
             Prompt = prompt,
             MaxTokens = maxTokens ?? 16
         };
 
         var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/completions", request);
         return await response.Content.ReadFromJsonAsync<CompletionCreateResponse?>();
+    }
+
+    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, string? model = null, int? maxTokens = null)
+    {
+        var request = new EditCreateRequest
+        {
+            Model = model ?? DefaultEditModel,
+            Input = input,
+            Instruction = instruction
+        };
+
+        var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/edits", request);
+        return await response.Content.ReadFromJsonAsync<EditCreateResponse?>();
     }
 }

@@ -27,8 +27,9 @@ var service = serviceProvider.GetRequiredService<IOpenAIService>();
 
 //var response = await service.RetrieveModels();
 //var response = await service.RetrieveModel("text-davinci-003");
-var response = await service.CreateCompletion("Say this is a test");
+//var response = await service.CreateCompletion("Say this is a test");
 //var response = await service.CreateCompletion("What is MOB programming?", OpenAIModels.TextDavinciV3, maxTokens: 100);
+var response = await service.CreateEdit(input: "What day of the wek is it?", instruction: "Fix the spelling mistakes");
 
 Console.WriteLine($"{JsonSerializer.Serialize(response, jsonSerializerOptions)}");
 Console.ReadKey();
