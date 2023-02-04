@@ -13,9 +13,9 @@ public enum ImageResponseFormat
     Base64
 }
 
-internal static class ImageModelsExtensions
+public static class ImageModelsExtensions
 {
-    internal static string ToStringSize(this ImageSize imageSize)
+    public static string ToStringSize(this ImageSize imageSize)
     {
         return imageSize switch
         {
@@ -26,7 +26,7 @@ internal static class ImageModelsExtensions
         };
     }
 
-    internal static string ToStringFormat(this ImageResponseFormat imageResponseFormat)
+    public static string ToStringFormat(this ImageResponseFormat imageResponseFormat)
     {
         return imageResponseFormat switch
         {
