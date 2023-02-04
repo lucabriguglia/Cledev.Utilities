@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Cledev.OpenAI.Services;
+namespace Cledev.OpenAI.V1.Models;
 
 public class CompletionCreateRequest
 {
