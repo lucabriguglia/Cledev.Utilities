@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
-using Cledev.OpenAI.V1.Models;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Cledev.OpenAI.V1.Contracts;
 
 namespace Cledev.OpenAI.V1;
 

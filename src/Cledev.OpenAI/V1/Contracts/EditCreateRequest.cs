@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Cledev.OpenAI.V1.Models;
+namespace Cledev.OpenAI.V1.Contracts;
 
 public class EditCreateRequest
 {
