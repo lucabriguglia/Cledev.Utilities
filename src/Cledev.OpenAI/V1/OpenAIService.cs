@@ -10,16 +10,14 @@ public interface IOpenAIService
 {
     Task<RetrieveModelsResponse?> RetrieveModels();
     Task<RetrieveModelsResponse.RetrieveModelsResponseData?> RetrieveModel(string id);
-    Task<CompletionCreateResponse?> CreateCompletion(string prompt, string? model = null, int? maxTokens = null);
-    Task<EditCreateResponse?> CreateEdit(string input, string instruction, string? model = null, int? maxTokens = null);
+    Task<CompletionCreateResponse?> CreateCompletion(string prompt, CompletionsModel? model = null, int? maxTokens = null);
+    Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null, int? maxTokens = null);
     Task<ImageCreateResponse?> CreateImage(string prompt);
 }
 
 public class OpenAIService : IOpenAIService
 {
     private const string ApiVersion = "v1";
-    private const string DefaultCompletionModel = "ada";
-    private const string DefaultEditModel = "text-davinci-edit-001";
 
     private readonly HttpClient _httpClient;
 
@@ -44,11 +42,11 @@ public class OpenAIService : IOpenAIService
         return await _httpClient.GetFromJsonAsync<RetrieveModelsResponse.RetrieveModelsResponseData?>($"/{ApiVersion}/models/{id}");
     }
 
-    public async Task<CompletionCreateResponse?> CreateCompletion(string prompt, string? model = null, int? maxTokens = null)
+    public async Task<CompletionCreateResponse?> CreateCompletion(string prompt, CompletionsModel? model = null, int? maxTokens = null)
     {
         var request = new CompletionCreateRequest
         {
-            Model = model ?? DefaultCompletionModel,
+            Model = (model ?? CompletionsModel.Ada).ToStringModel(),
             Prompt = prompt,
             MaxTokens = maxTokens ?? 16
         };
@@ -56,11 +54,11 @@ public class OpenAIService : IOpenAIService
         return await response.Content.ReadFromJsonAsync<CompletionCreateResponse?>();
     }
 
-    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, string? model = null, int? maxTokens = null)
+    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null, int? maxTokens = null)
     {
         var request = new EditCreateRequest
         {
-            Model = model ?? DefaultEditModel,
+            Model = (model ?? EditsModel.TextDavinciEditV1).ToStringModel(),
             Input = input,
             Instruction = instruction
         };
