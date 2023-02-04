@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 using System.Net.Http.Json;
 using Cledev.OpenAI.V1.Models;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Cledev.OpenAI.V1;
 
@@ -10,6 +12,7 @@ public interface IOpenAIService
     Task<RetrieveModelsResponse.RetrieveModelsResponseData?> RetrieveModel(string id);
     Task<CompletionCreateResponse?> CreateCompletion(string prompt, string? model = null, int? maxTokens = null);
     Task<EditCreateResponse?> CreateEdit(string input, string instruction, string? model = null, int? maxTokens = null);
+    Task<ImageCreateResponse?> CreateImage(string prompt);
 }
 
 public class OpenAIService : IOpenAIService
@@ -49,7 +52,6 @@ public class OpenAIService : IOpenAIService
             Prompt = prompt,
             MaxTokens = maxTokens ?? 16
         };
-
         var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/completions", request);
         return await response.Content.ReadFromJsonAsync<CompletionCreateResponse?>();
     }
@@ -62,8 +64,20 @@ public class OpenAIService : IOpenAIService
             Input = input,
             Instruction = instruction
         };
-
         var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/edits", request);
         return await response.Content.ReadFromJsonAsync<EditCreateResponse?>();
+    }
+
+    public async Task<ImageCreateResponse?> CreateImage(string prompt)
+    {
+        var request = new ImageCreateRequest
+        {
+            Prompt = prompt
+        };
+        var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/images/generations", request, new JsonSerializerOptions
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+        });
+        return await response.Content.ReadFromJsonAsync<ImageCreateResponse?>();
     }
 }
