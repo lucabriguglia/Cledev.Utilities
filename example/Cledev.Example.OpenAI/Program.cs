@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Cledev.OpenAI.Extensions;
 using Cledev.OpenAI.V1;
-using Cledev.OpenAI.V1.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

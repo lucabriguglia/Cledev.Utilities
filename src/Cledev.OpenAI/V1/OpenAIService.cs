@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using Cledev.OpenAI.V1.Models;
 
-namespace Cledev.OpenAI.V1.Services;
+namespace Cledev.OpenAI.V1;
 
 public interface IOpenAIService
 {

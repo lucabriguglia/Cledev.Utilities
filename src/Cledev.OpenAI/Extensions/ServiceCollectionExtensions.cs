@@ -1,4 +1,4 @@
-﻿using Cledev.OpenAI.V1.Services;
+﻿using Cledev.OpenAI.V1;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
