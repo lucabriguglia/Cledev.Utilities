@@ -10,8 +10,11 @@ public interface IOpenAIService
 {
     Task<RetrieveModelsResponse?> RetrieveModels();
     Task<RetrieveModelsResponse.RetrieveModelsResponseData?> RetrieveModel(string id);
+    Task<CompletionCreateResponse?> CreateCompletion(CompletionCreateRequest request);
     Task<CompletionCreateResponse?> CreateCompletion(string prompt, CompletionsModel? model = null, int? maxTokens = null);
+    Task<EditCreateResponse?> CreateEdit(EditCreateRequest request);
     Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null);
+    Task<ImageCreateResponse?> CreateImage(ImageCreateRequest request);
     Task<ImageCreateResponse?> CreateImage(string prompt, int? numberOfImagesToGenerate = null, ImageSize? size = null, ImageResponseFormat? responseFormat = null);
 }
 
@@ -42,43 +45,53 @@ public class OpenAIService : IOpenAIService
         return await _httpClient.GetFromJsonAsync<RetrieveModelsResponse.RetrieveModelsResponseData?>($"/{ApiVersion}/models/{id}");
     }
 
-    public async Task<CompletionCreateResponse?> CreateCompletion(string prompt, CompletionsModel? model = null, int? maxTokens = null)
+    public async Task<CompletionCreateResponse?> CreateCompletion(CompletionCreateRequest request)
     {
-        var request = new CompletionCreateRequest
-        {
-            Model = (model ?? CompletionsModel.Ada).ToStringModel(),
-            Prompt = prompt,
-            MaxTokens = maxTokens ?? 16
-        };
         var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/completions", request);
         return await response.Content.ReadFromJsonAsync<CompletionCreateResponse?>();
     }
 
-    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null)
+    public async Task<CompletionCreateResponse?> CreateCompletion(string prompt, CompletionsModel? model = null, int? maxTokens = null)
     {
-        var request = new EditCreateRequest
+        return await CreateCompletion(new CompletionCreateRequest
         {
-            Model = (model ?? EditsModel.TextDavinciEditV1).ToStringModel(),
-            Input = input,
-            Instruction = instruction
-        };
+            Model = (model ?? CompletionsModel.Ada).ToStringModel(),
+            Prompt = prompt,
+            MaxTokens = maxTokens ?? 16
+        });
+    }
+
+    public async Task<EditCreateResponse?> CreateEdit(EditCreateRequest request)
+    {
         var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/edits", request);
         return await response.Content.ReadFromJsonAsync<EditCreateResponse?>();
     }
 
+    public async Task<EditCreateResponse?> CreateEdit(string input, string instruction, EditsModel? model = null)
+    {
+        return await CreateEdit(new EditCreateRequest
+        {
+            Model = (model ?? EditsModel.TextDavinciEditV1).ToStringModel(),
+            Input = input,
+            Instruction = instruction
+        });
+    }
+
+    public async Task<ImageCreateResponse?> CreateImage(ImageCreateRequest request)
+    {
+        var jsonSerializerOptions = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault };
+        var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/images/generations", request, jsonSerializerOptions);
+        return await response.Content.ReadFromJsonAsync<ImageCreateResponse?>();
+    }
+
     public async Task<ImageCreateResponse?> CreateImage(string prompt, int? numberOfImagesToGenerate = null, ImageSize? size = null, ImageResponseFormat? responseFormat = null)
     {
-        var request = new ImageCreateRequest
+        return await CreateImage(new ImageCreateRequest
         {
             Prompt = prompt,
             NumberOfImagesToGenerate = numberOfImagesToGenerate ?? 1,
             ImageSize = (size ?? ImageSize.Size1024x1024).ToStringSize(),
             ResponseFormat = (responseFormat ?? ImageResponseFormat.Url).ToStringFormat()
-        };
-        var response = await _httpClient.PostAsJsonAsync($"/{ApiVersion}/images/generations", request, new JsonSerializerOptions
-        {
-            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
         });
-        return await response.Content.ReadFromJsonAsync<ImageCreateResponse?>();
     }
 }
