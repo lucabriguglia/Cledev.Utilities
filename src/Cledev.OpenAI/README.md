@@ -1,4 +1,2 @@
 # Cledev OpenAI (Preview)
-An OpenAI SDK
-
-...
+.NET SDK for OpenAI
