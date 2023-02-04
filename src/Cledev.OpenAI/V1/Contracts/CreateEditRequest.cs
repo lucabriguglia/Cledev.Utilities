@@ -2,7 +2,7 @@
 
 namespace Cledev.OpenAI.V1.Contracts;
 
-public class EditCreateRequest
+public class CreateEditRequest
 {
     [JsonPropertyName("model")]
     public required string Model { get; set; }

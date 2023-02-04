@@ -2,7 +2,7 @@
 
 namespace Cledev.OpenAI.V1.Contracts;
 
-public class CompletionCreateRequest
+public class CreateCompletionRequest
 {
     [JsonPropertyName("model")]
     public required string Model { get; set; }

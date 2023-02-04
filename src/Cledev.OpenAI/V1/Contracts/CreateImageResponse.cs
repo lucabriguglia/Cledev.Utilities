@@ -2,15 +2,15 @@
 
 namespace Cledev.OpenAI.V1.Contracts;
 
-public class ImageCreateResponse
+public class CreateImageResponse
 {
     [JsonPropertyName("created")]
     public int Created { get; set; }
 
     [JsonPropertyName("data")]
-    public List<ImageCreateResponseData> Data { get; set; } = new();
+    public List<CreateImageResponseData> Data { get; set; } = new();
 
-    public class ImageCreateResponseData
+    public class CreateImageResponseData
     {
         [JsonPropertyName("url")]
         public string? Url { get; set; }

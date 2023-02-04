@@ -2,10 +2,10 @@
 
 namespace Cledev.OpenAI.V1.Contracts;
 
-public class ImageCreateRequest
+public class CreateImageVariationRequest
 {
-    [JsonPropertyName("prompt")]
-    public required string Prompt { get; set; }
+    [JsonPropertyName("image")]
+    public required string Image { get; set; }
 
     [JsonPropertyName("n")]
     public required int? NumberOfImagesToGenerate { get; set; }
